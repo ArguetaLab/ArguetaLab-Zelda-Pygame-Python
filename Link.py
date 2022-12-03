@@ -2,7 +2,7 @@ import pygame
 import Mapa_Zelda
 
 class Link(pygame.sprite.Sprite):
-    def __init__(self, pos, groups):
+    def __init__(self, pos, groups, obstaculos):
         super().__init__(groups)
 
         self.image = pygame.image.load("Link 2.2.png")
@@ -10,6 +10,8 @@ class Link(pygame.sprite.Sprite):
 
         self.direccion = pygame.math.Vector2()
         self.velocidad = 5
+
+        self.Obstaculos = obstaculos
 
 
     def teclado(self):
@@ -37,7 +39,30 @@ class Link(pygame.sprite.Sprite):
         if self.direccion.magnitude() != 0:
             self.direccion = self.direccion.normalize()
 
-        self.rect.center += self.direccion * velocidad
+        self.rect.x += self.direccion.x * velocidad
+        self.coliciones("horizontal")
+
+        self.rect.y += self.direccion.y * velocidad
+        self.coliciones("vertical")
+
+    def coliciones(self, direccion):
+        if direccion == "horizontal":
+            for sprite in self.Obstaculos:
+                if sprite.rect.colliderect(self.rect):
+                    if self.direccion.x > 0:
+                        self.rect.right = sprite.rect.left
+
+                    if self.direccion.x < 0:
+                        self.rect.left = sprite.rect.right
+
+        if direccion == "vertical":
+            for sprite in self.Obstaculos:
+                if sprite.rect.colliderect(self.rect):
+                    if self.direccion.y > 0:
+                        self.rect.bottom = sprite.rect.top
+
+                    if self.direccion.y < 0:
+                        self.rect.top = sprite.rect.bottom
 
     def update(self):
         self.teclado()
