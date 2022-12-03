@@ -20,7 +20,7 @@ class Nivel:
                 if col == "x":
                     Tile((x,y), [self.Sprites_deFondo, self.Obtaculos])
                 if col == "L":
-                    Link((x,y), [self.Sprites_deFondo])
+                    Link((x,y), [self.Sprites_deFondo], self.Obtaculos)
 
     def corre(self):
         self.Sprites_deFondo.draw(self.screen)
