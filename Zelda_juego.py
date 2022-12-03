@@ -1,44 +1,24 @@
+import sys
 import pygame
-import Mapa_Zelda
+from Nivel_Zelda import Nivel
 
-class Link(pygame.sprite.Sprite):
-    def __init__(self, pos, groups):
-        super().__init__(groups)
+class Zelda:
+    def __init__(self):
+        pygame.init()
+        self.screen = pygame.display.set_mode((1100, 550))
+        pygame.display.set_caption("Zelda")
+        self.nivel = Nivel()
 
-        self.image = pygame.image.load("Link 2.2.png")
-        self.rect = self.image.get_rect(topleft = pos)
+    def corre_juego(self):
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                   sys.exit()
 
-        self.direccion = pygame.math.Vector2()
-        self.velocidad = 5
+            self.screen.fill("black")
+            self.nivel.corre()
+            pygame.display.update()
 
-
-    def teclado(self):
-        keys = pygame.key.get_pressed()
-
-        if keys[pygame.K_UP]:
-            self.direccion.y = -1
-
-        elif keys[pygame.K_DOWN]:
-            self.direccion.y = 1
-
-        else:
-            self.direccion.y = 0
-
-        if keys[pygame.K_RIGHT]:
-            self.direccion.x = 1
-
-        elif keys[pygame.K_LEFT]:
-            self.direccion.x = -1
-
-        else:
-            self.direccion.x = 0
-
-    def mover(self, velocidad):
-        if self.direccion.magnitude() != 0:
-            self.direccion = self.direccion.normalize()
-
-        self.rect.center += self.direccion * velocidad
-
-    def update(self):
-        self.teclado()
-        self.mover(self.velocidad)
+if __name__ == "__main__":
+    zelda_juego = Zelda()
+    zelda_juego.corre_juego()
