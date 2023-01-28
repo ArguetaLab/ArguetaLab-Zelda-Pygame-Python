@@ -39,6 +39,6 @@ class YGrupoCamara(pygame.sprite.Group):
         self.offset.x = Link.rect.centerx - self.half_width
         self.offset.y = Link.rect.centery - self.half_height
 
-        for sprite in self.sprites():
+        for sprite in sorted(self.sprites(),key = lambda sprite:sprite.rect.centery):
             offset_rect = sprite.rect.topleft - self.offset
             self.screen.blit(sprite.image, offset_rect)
