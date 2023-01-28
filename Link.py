@@ -7,6 +7,7 @@ class Link(pygame.sprite.Sprite):
 
         self.image = pygame.image.load("Link 2.2.png")
         self.rect = self.image.get_rect(topleft = pos)
+        self.hitbox = self.rect.inflate(0, -30)
 
         self.direccion = pygame.math.Vector2()
         self.velocidad = 5
@@ -39,30 +40,31 @@ class Link(pygame.sprite.Sprite):
         if self.direccion.magnitude() != 0:
             self.direccion = self.direccion.normalize()
 
-        self.rect.x += self.direccion.x * velocidad
+        self.hitbox.x += self.direccion.x * velocidad
         self.coliciones("horizontal")
 
-        self.rect.y += self.direccion.y * velocidad
+        self.hitbox.y += self.direccion.y * velocidad
         self.coliciones("vertical")
+        self.rect.center = self.hitbox.center
 
     def coliciones(self, direccion):
         if direccion == "horizontal":
             for sprite in self.Obstaculos:
-                if sprite.rect.colliderect(self.rect):
+                if sprite.rect.colliderect(self.hitbox):
                     if self.direccion.x > 0:
-                        self.rect.right = sprite.rect.left
+                        self.hitbox.right = sprite.rect.left
 
                     if self.direccion.x < 0:
-                        self.rect.left = sprite.rect.right
+                        self.hitbox.left = sprite.rect.right
 
         if direccion == "vertical":
             for sprite in self.Obstaculos:
-                if sprite.rect.colliderect(self.rect):
+                if sprite.rect.colliderect(self.hitbox):
                     if self.direccion.y > 0:
-                        self.rect.bottom = sprite.rect.top
+                        self.hitbox.bottom = sprite.rect.top
 
                     if self.direccion.y < 0:
-                        self.rect.top = sprite.rect.bottom
+                        self.hitbox.top = sprite.rect.bottom
 
     def update(self):
         self.teclado()
