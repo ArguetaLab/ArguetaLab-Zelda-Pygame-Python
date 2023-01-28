@@ -1,3 +1,4 @@
+
 import pygame
 import Mapa_Zelda
 
@@ -7,3 +8,4 @@ class Tile(pygame.sprite.Sprite):
 
         self.image = pygame.image.load("roca 2.1.png")
         self.rect = self.image.get_rect(topleft = pos)
+        self.hitbox = self.rect.inflate(0, -20)
